@@ -6,7 +6,8 @@ const tabInitialState = {
 export default function Tab(state = tabInitialState, action = {}){
   switch (action.type) {
     case types.TAB_CHANGE:
-      return {...state, action.tab};
+      const {tab} = action;
+      return {...state,...tab};
       break;
     default:
       return state;
