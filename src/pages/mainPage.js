@@ -47,8 +47,7 @@ class MofangTab extends Component {
     super(props);
   }
   static propTypes = {
-    title: React.PropTypes.string.isRequired,
-    selectedTab:  React.PropTypes.string.isRequired,
+    tab: React.PropTypes.object.isRequired,
     changeTab: React.PropTypes.func.isRequired
   };
   _changeTab(tabName){
@@ -98,33 +97,42 @@ class MofangTab extends Component {
               title="现场面试"
               iconName="ios-alarm-outline"
               selectedIconName="ios-alarm"
-              onPress={() => this.props.changeTab('interview-offline')}
-              selected={this.props.selectedTab === 'interview-offline'}
+              onPress={() => this.props.changeTab({
+                title:'现场面试',
+                selectedTab:'interview-offline'
+              })}
+              selected={this.props.tab.selectedTab === 'interview-offline'}
               >
               <View>
-                  <Header title={this.props.title}/>
+                  <Header title={this.props.tab.title}/>
               </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
             title="消息中心"
             iconName="ios-chatbubbles-outline"
             selectedIconName="ios-chatbubbles"
-            onPress={() => this.props.changeTab('message')}
+            onPress={() => this.props.changeTab({
+              title:'消息中心',
+              selectedTab:'message'
+            })}
             selected={this.props.selectedTab === 'message'}
             >
             <View>
-                <Header title={this.props.title}/>
+                <Header title={this.props.tab.title}/>
             </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
             title="我的"
             iconName="ios-person-add-outline"
             selectedIconName="ios-person-add"
-            onPress={() => this.props.changeTab('mine')}
-            selected={this.props.selectedTab === 'mine'}
+            onPress={() => this.props.changeTab({
+              title:'我的',
+              selectedTab:'mine'
+            })}
+            selected={this.props.tab.selectedTab === 'mine'}
             >
             <View>
-                <Header title={this.props.title}/>
+                <Header title={this.props.tab.title}/>
             </View>
          </Icon.TabBarItem>
       </TabBarIOS>

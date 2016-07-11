@@ -1,7 +1,9 @@
 import * as types from '../actions/actionTypes';
 const tabInitialState = {
-  title:'在线面试',
-  selectedTab: 'interview-online'
+  tab:{
+    title:'在线面试',
+    selectedTab: 'interview-online'
+  }
 };
 export default function Tab(state = tabInitialState, action = {}){
   switch (action.type) {
