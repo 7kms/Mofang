@@ -7,9 +7,11 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
+import * as TabActions from '../actions/TabActions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Util from './util.js';
-import OnlineComponent from './online/index.js';
+//import OnlineComponent from './online/index.js';
+
 class Header extends Component {
   constructor(props){
     super(props);
@@ -41,13 +43,14 @@ const headerStyle = StyleSheet.create({
   }
 });
 class MofangTab extends Component {
-  constructor() {
-    super();
-    this.state = {
-      title:'在线面试',
-      selectedTab: 'interview-online'
-    };
+  constructor(props) {
+    super(props);
   }
+  static propTypes = {
+    title: React.PropTypes.string.isRequired,
+    selectedTab:  React.PropTypes.string.isRequired,
+    changeTab: React.PropTypes.func.isRequired
+  };
   _changeTab(tabName){
     let title = '';
     switch (tabName) {
@@ -83,11 +86,11 @@ class MofangTab extends Component {
             title="在线面试"
             iconName="ios-appstore-outline"
             selectedIconName="ios-appstore"
-            onPress={() => this._changeTab('interview-online')}
-            selected={ this.state.selectedTab === 'interview-online' }
+            onPress={() => this.props.changeTab('interview-online')}
+            selected={this.props.selectedTab === 'interview-online'}
             >
-            <View style={{flex:1}}>
-              <OnlineComponent title={this.state.title}/>
+            <View>
+                <Header title={this.props.title}/>
             </View>
           </Icon.TabBarItem>
 
@@ -95,44 +98,53 @@ class MofangTab extends Component {
               title="现场面试"
               iconName="ios-alarm-outline"
               selectedIconName="ios-alarm"
-              onPress={() => this._changeTab('interview-offline')}
-              selected={this.state.selectedTab==='interview-offline'}
+              onPress={() => this.props.changeTab('interview-offline')}
+              selected={this.props.selectedTab === 'interview-offline'}
               >
               <View>
-                <Header title={this.state.title}/>
+                  <Header title={this.props.title}/>
               </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
             title="消息中心"
             iconName="ios-chatbubbles-outline"
             selectedIconName="ios-chatbubbles"
-            onPress={() => this._changeTab('message')}
-            selected={this.state.selectedTab==='message'}
+            onPress={() => this.props.changeTab('message')}
+            selected={this.props.selectedTab === 'message'}
             >
             <View>
-              <Header title={this.state.title}/>
+                <Header title={this.props.title}/>
             </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
             title="我的"
             iconName="ios-person-add-outline"
             selectedIconName="ios-person-add"
-            onPress={() => this._changeTab('mine')}
-            selected={this.state.selectedTab==='mine'}
+            onPress={() => this.props.changeTab('mine')}
+            selected={this.props.selectedTab === 'mine'}
             >
             <View>
-              <Header title={this.state.title}/>
+                <Header title={this.props.title}/>
             </View>
          </Icon.TabBarItem>
       </TabBarIOS>
     );
   }
 }
+
 class MainPage extends Component{
+  constructor(props){
+    super(props);
+  }
+  static propTypes = {
+    title: React.PropTypes.string.isRequired,
+    selectedTab:  React.PropTypes.string.isRequired,
+    changeTab: React.PropTypes.func.isRequired
+  };
   render(){
     return (
       <View style={styles.pageContainer}>
-        <MofangTab />
+        <MofangTab {...this.props}/>
       </View>
     )
   }
@@ -144,8 +156,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   }
 });
-export default connect(state=>({
-
-}),dispatch=>({
-
+export default connect(state => ({
+  tab: state.tab
+}),dispatch => ({
+  changeTab:(tab)=> dispatch(TabActions.tabChange(tab));
 }))(MainPage);
