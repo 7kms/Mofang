@@ -39,10 +39,7 @@ componentWillUpdate(nextProps, nextState){
   console.log("componentWillUpdate");
 }
 componentDidUpdate(prevProps, prevState){
-  this.refs['freshIndicator']._nativeRef.setNativeProps({
-    refreshing: false,
-    title:'下拉刷新'
-  });
+
   console.log("componentDidUpdate",prevProps,prevState);
 }
 componentWillUnmount(){
@@ -102,17 +99,19 @@ componentWillUnmount(){
     return(
       <View style={{flex:1}}>
         <ListView
-            style={{flex:1,marginBottom:46,backgroundColor:'#eee'}}
+            style={{flex:1,backgroundColor:'#eee',paddingHorizontal:0}}
             scrollRenderAheadDistance={100}
+
             onEndReachedThreshold={100}
             showsVerticalScrollIndicator={false}
             enableEmptySections = {true}
             dataSource={theDataSource}
             renderRow={this._renderRow.bind(this)}
             onEndReached={this.props.pullUp.bind(this)}
+            automaticallyAdjustContentInsets = {false}
+            contentInset={{bottom:49}}
             refreshControl={
               <RefreshControl
-                ref='freshIndicator'
                 refreshing={this.props.indicator.isRefreshing}
                 onRefresh={()=>this._onRefresh()}
                 title={this.props.indicator.freshText}
