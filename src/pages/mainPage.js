@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as TabActions from '../actions/TabActions';
+import * as onlineInterviewActions from '../actions/onlineInterviewActions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Util from '../utils';
-//import OnlineComponent from './online/index.js';
+import OnlineInterview from './onlineInterview';
 
 class Header extends Component {
   constructor(props){
@@ -47,12 +48,20 @@ class MofangTab extends Component {
     super(props);
   }
   static propTypes = {
-    title: React.PropTypes.string.isRequired,
-    selectedTab:  React.PropTypes.string.isRequired,
+    Tab: React.PropTypes.object.isRequired,
+    OnlineJobArr: React.PropTypes.array.isRequired,
+    OnlineConditionStore: React.PropTypes.object.isRequired,
     changeTab: React.PropTypes.func.isRequired
   };
-
+  _isActive (currentTab){
+    const {selectedTab} = this.props.Tab;
+    if(selectedTab === currentTab){
+      return true;
+    }
+    return false;
+  }
   render (){
+    const {title} = this.props.Tab;
     return(
       <TabBarIOS
         barTintColor='#fff'
@@ -67,11 +76,14 @@ class MofangTab extends Component {
               title:'在线面试',
               selectedTab:'interview-online'
             })}
-            selected={this.props.selectedTab === 'interview-online'}
+            selected={this._isActive('interview-online')}
             >
-            <View>
-                <Header title={this.props.title}/>
-            </View>
+            <OnlineInterview
+              indicator = {this.props.OnlineJobIndicator}
+              getJobList = {this.props.getJobList}
+              jobArr = {this.props.OnlineJobArr}
+              conditionStore = {this.props.OnlineConditionStore}
+              title={title}/>
           </Icon.TabBarItem>
 
           <Icon.TabBarItem
@@ -82,10 +94,10 @@ class MofangTab extends Component {
                 title:'现场面试',
                 selectedTab:'interview-offline'
               })}
-              selected={this.props.selectedTab === 'interview-offline'}
+              selected={this._isActive('interview-offline')}
               >
               <View>
-                  <Header title={this.props.title}/>
+                  <Header title={title}/>
               </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
@@ -96,10 +108,10 @@ class MofangTab extends Component {
               title:'消息中心',
               selectedTab:'message'
             })}
-            selected={this.props.selectedTab === 'message'}
+            selected={this._isActive('message')}
             >
             <View>
-                <Header title={this.props.title}/>
+                  <Header title={title}/>
             </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
@@ -110,10 +122,10 @@ class MofangTab extends Component {
               title:'我的',
               selectedTab:'mine'
             })}
-            selected={this.props.selectedTab === 'mine'}
+            selected={this._isActive('mine')}
             >
             <View>
-                <Header title={this.props.title}/>
+                <Header title={title}/>
             </View>
          </Icon.TabBarItem>
       </TabBarIOS>
@@ -126,9 +138,9 @@ class MainPage extends Component{
     super(props);
   }
   static propTypes = {
-    title: React.PropTypes.string.isRequired,
-    selectedTab:  React.PropTypes.string.isRequired,
-    changeTab: React.PropTypes.func.isRequired
+    Tab: React.PropTypes.object.isRequired,
+    OnlineJobArr: React.PropTypes.array.isRequired,
+    OnlineConditionStore: React.PropTypes.object.isRequired
   };
   render(){
     return (
@@ -147,7 +159,13 @@ const styles = StyleSheet.create({
 });
 export default connect((state) => {
   console.log(state);
-  return {...state.Tab};
+  return {
+    Tab: state.Tab,
+    OnlineJobArr: state.OnlineJobArr,
+    OnlineConditionStore: state.OnlineConditionStore,
+    OnlineJobIndicator: state.OnlineJobIndicator
+  };
 },(dispatch) => ({
+  getJobList:(params)=> dispatch(onlineInterviewActions.getList(params)),
   changeTab:(tab)=> dispatch(TabActions.tabChange(tab))
 }))(MainPage);

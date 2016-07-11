@@ -9,18 +9,14 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFA from 'react-native-vector-icons/FontAwesome';
-import Util from '../util.js';
+import Util from '../utils';
 export default class JobList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isRefreshing:false,
-      freshText:'下拉刷新'
-    };
     console.log('joblist is rendering');
   }
   static count = 1;
-  static Props = {
+  static propTypes = {
     dataList: React.PropTypes.array.isRequired,
     onPress: React.PropTypes.func.isRequired,
     onRefresh: React.PropTypes.func.isRequired,
@@ -32,11 +28,7 @@ export default class JobList extends Component {
   componentDidMount(){
     console.log("componentDidMount");
   }
-
 componentWillReceiveProps(nextProps){
-
-  //this.setState();
-  //alert('下拉刷新');
   console.log("componentWillReceiveProps",nextProps);
 }
 shouldComponentUpdate(nextProps,nextState){
@@ -57,7 +49,6 @@ componentWillUnmount(){
   console.log("componentWillUnmount");
 }
   _renderRow(job) {
-    console.log("render row");
     return (
       <TouchableHighlight
         activeOpacity={0.8}
@@ -102,17 +93,7 @@ componentWillUnmount(){
   }
 
   _onRefresh(){
-    console.log('onrefreshing');
-    this.refs['freshIndicator']._nativeRef.setNativeProps({
-      //refreshing: true,
-      title:'正在加载'
-    });
 
-    // this.setState({
-    //   isRefreshing: true,
-    //   freshText:'正在加载'
-    // });
-    this.props.onRefresh();
   }
   render(){
     let ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
@@ -132,9 +113,9 @@ componentWillUnmount(){
             refreshControl={
               <RefreshControl
                 ref='freshIndicator'
-                refreshing={this.state.isRefreshing}
+                refreshing={this.props.indicator.isRefreshing}
                 onRefresh={()=>this._onRefresh()}
-                title={this.state.freshText}
+                title={this.props.indicator.freshText}
                 titleColor={Util.themeColor}
                 tintColor={Util.themeColor}/>}
           />

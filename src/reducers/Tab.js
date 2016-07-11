@@ -3,7 +3,7 @@ const tabInitialState = {
     title:'在线面试',
     selectedTab: 'interview-online'
 };
-export default function Tab(state = tabInitialState, action = {}){
+export function Tab(state = tabInitialState, action = {}){
   switch (action.type) {
     case types.TAB_CHANGE:
       const {tab} = action;

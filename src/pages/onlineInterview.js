@@ -5,14 +5,14 @@ import {
   Text,
   ActivityIndicator
 } from 'react-native';
-import JobList from './jobList.js';
-import Util from '../util.js';
+import JobList from '../components/onlineJobList.js';
+import Util from '../utils';
 class Header extends Component{
   constructor(props){
     super(props);
   }
   static propTypes = {
-    title:React.PropTypes.string.isRequired
+    title: React.PropTypes.string.isRequired
   };
   render(){
     return(
@@ -27,63 +27,18 @@ class Header extends Component{
 class JobPage extends Component{
   constructor(props) {
     super(props);
-    this.state = {
-      jobArr:[],
-      loading:true
-    };
-  }
-  static renderFlag = true;
-  static isBusy = false;
-  static conditionStore = {
-    start:0,
-    count:15,
-    source:'wechat',
-    province: "北京",
-    district: "",
-    jobType : [{name:"",code:""}],
-    salaryRange : "",
-    workingYear : "",
-    searchText: ""
-  };
-  _changeCondion(item,value){
-    JobPage.conditionStore[item] = value;
+    console.log(props);
   }
   _refresh(){
-    if(!JobPage.isBusy){
-      JobPage.conditionStore.start = 0;
-      JobPage.isBusy = true;
-      // this.setState({
-      //   jobArr:[]
-      // });
-      this._getJobData("fresh");
-    }
+    this.props.refresh();
   }
   _pullUp(){
-    console.log('pull up');
-    if(JobPage.renderFlag){
-      let storeObj = JobPage.conditionStore;
-      let start = storeObj.start + storeObj.count;
-      JobPage.renderFlag = false;
-      storeObj.start = start;
-      this._getJobData();
-    }
+    console.log("pullUp");
+    this._getJobData();
   }
   _getParameters(){
-    let url = new URL("http://mofanghr.com/m/jobs/search");
-    let params = this.conditionStore;
-    Object.keys(params).forEach(key => {
-      if(key === 'jobType'){
-        url.searchParams.append('jobTypes', params[key][0].code);
-      }else{
-        url.searchParams.append(key, params[key]);
-      }
-    });
-    return url;
-  }
-  _getParameters2(){
-    let url = "http://mofanghr.com/m/jobs/search";
-    let params = JobPage.conditionStore;
-    let search = "?";
+    let params = this.props.conditionStore;
+    let search = "";
     Object.keys(params).forEach(key => {
       if(key === 'jobType'){
         params[key].forEach(obj=>{
@@ -96,54 +51,21 @@ class JobPage extends Component{
     });
     if(search.length > 1){
       search = search.slice(0,-1);
-      url += search;
     }
-    console.log(url);
-    return url;
+    return search;
   }
-  _getJobData(isRefresh){
-    //let url = this._getParameters();
-    let url = this._getParameters2();
-    fetch(url,{
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(res=>{
-      return res.json();
-    })
-    .then(dataArr => {
-      let oldArr = isRefresh ? [] : this.state.jobArr;
-      let newArr = [...oldArr,...dataArr];
-      let flag = dataArr.length == JobPage.conditionStore.count ? true : false;
-      JobPage.renderFlag = flag;
-      JobPage.isBusy = false;
-      this.setState({
-        jobArr: newArr,
-        loading: false
-      });
-    })
-    .catch(error => {
-      JobPage.renderFlag = true;
-      JobPage.isBusy = false;
-    });
+  _getJobData(){
+    this.props.getJobList(this._getParameters());
   }
   _goJobDeatail(job){
     console.log(job);
-    // this.props.navigator.push({
-    //   title: `${job.name}`,
-    //   component: JobDetail,
-    //   passProps: { movie:movie }
-    // });
   }
   componentWillMount(){
-    this._getJobData();
+    //this._getJobData();
   }
   render(){
     let content;
-    if(this.state.loading){
+    if(JobPage.loading){
       content = (
         <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
           <View style={{height:100}}>
@@ -160,30 +82,28 @@ class JobPage extends Component{
     }else{
       content = (
         <JobList
-           dataList={this.state.jobArr}
+           dataList={this.props.jobArr}
            onPress={this._goJobDeatail.bind(this)}
            pullUp={this._pullUp.bind(this)}
            onRefresh={this._refresh.bind(this)}
+           indicator = {this.props.indicator}
            />
       );
     }
     return content;
   }
 }
-class OnlineComponent extends Component{
+class OnlineInterview extends Component{
   constructor(props) {
     super(props);
   }
-  static Props = {
-    navigator: React.PropTypes.object
-  };
   render(){
     return(
-    <View style={{flex:1,backgroundColor:'#eee'}}>
-      <Header title={this.props.title}/>
-      <JobPage navigator={this.props.navigator}/>
-    </View>
-  );
+      <View style={{flex:1,backgroundColor:'#eee'}}>
+        <Header title={this.props.title}/>
+        <JobPage {...this.props}/>
+      </View>
+    );
   }
 }
 const headerStyle = StyleSheet.create({
@@ -199,4 +119,4 @@ const headerStyle = StyleSheet.create({
     fontSize:20
   }
 });
-export default OnlineComponent;
+export default OnlineInterview;

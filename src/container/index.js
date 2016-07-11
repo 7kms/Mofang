@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import MofangApp from './App';
 import { createStore,applyMiddleware,combineReducers } from 'redux';
-import * as reducers from '../reducers';
+import reducers from '../reducers';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
