@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 import * as TabActions from '../actions/TabActions';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Util from './util.js';
+import Util from '../utils';
 //import OnlineComponent from './online/index.js';
 
 class Header extends Component {
@@ -47,7 +47,8 @@ class MofangTab extends Component {
     super(props);
   }
   static propTypes = {
-    tab: React.PropTypes.object.isRequired,
+    title: React.PropTypes.string.isRequired,
+    selectedTab:  React.PropTypes.string.isRequired,
     changeTab: React.PropTypes.func.isRequired
   };
 
@@ -81,10 +82,10 @@ class MofangTab extends Component {
                 title:'现场面试',
                 selectedTab:'interview-offline'
               })}
-              selected={this.props.tab.selectedTab === 'interview-offline'}
+              selected={this.props.selectedTab === 'interview-offline'}
               >
               <View>
-                  <Header title={this.props.tab.title}/>
+                  <Header title={this.props.title}/>
               </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
@@ -98,7 +99,7 @@ class MofangTab extends Component {
             selected={this.props.selectedTab === 'message'}
             >
             <View>
-                <Header title={this.props.tab.title}/>
+                <Header title={this.props.title}/>
             </View>
           </Icon.TabBarItem>
           <Icon.TabBarItem
@@ -109,10 +110,10 @@ class MofangTab extends Component {
               title:'我的',
               selectedTab:'mine'
             })}
-            selected={this.props.tab.selectedTab === 'mine'}
+            selected={this.props.selectedTab === 'mine'}
             >
             <View>
-                <Header title={this.props.tab.title}/>
+                <Header title={this.props.title}/>
             </View>
          </Icon.TabBarItem>
       </TabBarIOS>
@@ -132,7 +133,7 @@ class MainPage extends Component{
   render(){
     return (
       <View style={styles.pageContainer}>
-        <MofangTab {...this.props}/>
+          <MofangTab {...this.props}/>
       </View>
     )
   }
@@ -144,9 +145,9 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   }
 });
-export default connect(state => ({
-  title: state.title,
-  selectedTab: state.selectedTab
-}),dispatch => ({
-  changeTab:(tab)=> dispatch(TabActions.tabChange(tab));
+export default connect((state) => {
+  console.log(state);
+  return {...state.Tab};
+},(dispatch) => ({
+  changeTab:(tab)=> dispatch(TabActions.tabChange(tab))
 }))(MainPage);

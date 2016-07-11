@@ -5,8 +5,8 @@
  */
 
 import React, { Component } from 'react';
-import Mofang from './src/container';
 import {
-  Appregistry
+  AppRegistry
 } from 'react-native';
+import Mofang from './src/container/index';
 AppRegistry.registerComponent('Mofang', () => Mofang);
