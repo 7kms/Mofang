@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(state=>state)(MoFang);
+export default MoFang;

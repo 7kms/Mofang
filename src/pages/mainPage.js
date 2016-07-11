@@ -50,30 +50,7 @@ class MofangTab extends Component {
     tab: React.PropTypes.object.isRequired,
     changeTab: React.PropTypes.func.isRequired
   };
-  _changeTab(tabName){
-    let title = '';
-    switch (tabName) {
-      case 'interview-online':
-        title = '在线面试';
-        break;
-      case 'interview-offline':
-        title = '现场面试';
-        break;
-      case 'message':
-        title = '消息中心';
-        break;
-      case 'mine':
-        title = '我的';
-        break;
-      default:
-        title = '在线面试';
-      break;
-    }
-    this.setState({
-      title: title,
-      selectedTab: tabName
-    });
-  }
+
   render (){
     return(
       <TabBarIOS
@@ -85,7 +62,10 @@ class MofangTab extends Component {
             title="在线面试"
             iconName="ios-appstore-outline"
             selectedIconName="ios-appstore"
-            onPress={() => this.props.changeTab('interview-online')}
+            onPress={() => this.props.changeTab({
+              title:'在线面试',
+              selectedTab:'interview-online'
+            })}
             selected={this.props.selectedTab === 'interview-online'}
             >
             <View>
@@ -165,7 +145,8 @@ const styles = StyleSheet.create({
   }
 });
 export default connect(state => ({
-  tab: state.tab
+  title: state.title,
+  selectedTab: state.selectedTab
 }),dispatch => ({
   changeTab:(tab)=> dispatch(TabActions.tabChange(tab));
 }))(MainPage);
