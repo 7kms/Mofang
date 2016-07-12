@@ -28,23 +28,23 @@ export default class JobList extends Component {
   componentDidMount(){
     console.log("componentDidMount");
   }
-componentWillReceiveProps(nextProps){
-  console.log("componentWillReceiveProps",nextProps);
-}
-shouldComponentUpdate(nextProps,nextState){
-  console.log("shouldComponentUpdate",nextProps,nextState);
-  return true;
-}
-componentWillUpdate(nextProps, nextState){
-  console.log("componentWillUpdate");
-}
-componentDidUpdate(prevProps, prevState){
+  componentWillReceiveProps(nextProps){
+    console.log("componentWillReceiveProps",nextProps);
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    console.log("shouldComponentUpdate",nextProps,nextState);
+    return true;
+  }
+  componentWillUpdate(nextProps, nextState){
+    console.log("componentWillUpdate");
+  }
+  componentDidUpdate(prevProps, prevState){
 
-  console.log("componentDidUpdate",prevProps,prevState);
-}
-componentWillUnmount(){
-  console.log("componentWillUnmount");
-}
+    console.log("componentDidUpdate",prevProps,prevState);
+  }
+  componentWillUnmount(){
+    console.log("componentWillUnmount");
+  }
   _renderRow(job) {
     return (
       <TouchableHighlight
@@ -90,7 +90,7 @@ componentWillUnmount(){
   }
 
   _onRefresh(){
-
+    this.props.onRefresh({isRefreshing:true,freshText:'正在加载'});
   }
   render(){
     let ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
@@ -101,7 +101,6 @@ componentWillUnmount(){
         <ListView
             style={{flex:1,backgroundColor:'#eee',paddingHorizontal:0}}
             scrollRenderAheadDistance={100}
-
             onEndReachedThreshold={100}
             showsVerticalScrollIndicator={false}
             enableEmptySections = {true}

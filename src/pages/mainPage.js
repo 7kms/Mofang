@@ -167,5 +167,7 @@ export default connect((state) => {
   };
 },(dispatch) => ({
   getJobList:(params)=> dispatch(onlineInterviewActions.getList(params)),
-  changeTab:(tab)=> dispatch(TabActions.tabChange(tab))
+  changeTab:(tab)=> dispatch(TabActions.tabChange(tab)),
+  changeIndicator:(indicator)=> dispatch(onlineInterviewActions.changeIndicator(indicator)),
+  refresh:()=>dispatch(onlineInterviewActions.refresh(indicator))
 }))(MainPage);

@@ -40,3 +40,15 @@ export function getList(params){
     });
   };
 }
+export function changeIndicator(indicator){
+  return {
+    type: types.CHANGE_ONLINE_INDICATOR,
+    indicator
+  };
+}
+export function refresh(indicator){
+  return {
+    type: types.REFRESH_ONLINE_JOBLIST,
+    indicator
+  };
+}
