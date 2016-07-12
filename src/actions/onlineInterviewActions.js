@@ -68,7 +68,7 @@ function query(search,isFresh){
 }
 export function getList(){
   return (dispatch,getState) => {
-    let condition = Object.assign({},getState().conditionStore);
+    let condition = Object.assign({},getState().OnlineConditionStore);
     let search = getParameters(condition);
     dispatch(query(search));
   }
@@ -81,7 +81,7 @@ export function changeIndicator(indicator){
 }
 export function refresh(indicator){
   return (dispatch,getState) => {
-    let condition = Object.assign({},getState().conditionStore,{start:0});
+    let condition = Object.assign({},getState().OnlineConditionStore,{start:0});
     let search = getParameters(condition);
     dispatch(changeIndicator(indicator));
     dispatch(query(search,'fresh'));

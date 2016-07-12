@@ -27,19 +27,16 @@ class Header extends Component{
 class JobPage extends Component{
   constructor(props) {
     super(props);
-    console.log(props);
   }
   static propTypes = {
     refresh: React.PropTypes.func.isRequired,
     getJobList: React.PropTypes.func.isRequired,
-    changeIndicator: React.PropTypes.func.isRequired,
     jobArr: React.PropTypes.array.isRequired,
     conditionStore:  React.PropTypes.object.isRequired,
     indicator:  React.PropTypes.object.isRequired
   };
   _refresh(){
-    this.props.changeIndicator({isRefreshing:true,freshText:'正在加載'});
-    this.props.refresh();
+    this.props.refresh({isRefreshing:true,freshText:'正在加載'});
   }
   _pullUp(){
     this._getJobData();
