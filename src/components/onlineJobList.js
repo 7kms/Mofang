@@ -6,9 +6,8 @@ import {
   TouchableHighlight,
   RefreshControl,
   Text
-} from 'react-native';
+} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
-import IconFA from 'react-native-vector-icons/FontAwesome';
 import Util from '../utils';
 export default class JobList extends Component {
   constructor(props) {
