@@ -29,33 +29,23 @@ class JobPage extends Component{
     super(props);
     console.log(props);
   }
+  static propTypes = {
+    refresh: React.PropTypes.func.isRequired,
+    getJobList: React.PropTypes.func.isRequired,
+    changeIndicator: React.PropTypes.func.isRequired,
+    jobArr: React.PropTypes.array.isRequired,
+    conditionStore:  React.PropTypes.object.isRequired,
+    indicator:  React.PropTypes.object.isRequired
+  };
   _refresh(){
+    this.props.changeIndicator({isRefreshing:true,freshText:'正在加載'});
     this.props.refresh();
   }
   _pullUp(){
-    console.log("pullUp");
     this._getJobData();
   }
-  _getParameters(){
-    let params = this.props.conditionStore;
-    let search = "";
-    Object.keys(params).forEach(key => {
-      if(key === 'jobType'){
-        params[key].forEach(obj=>{
-          search += 'jobTypes='+obj.code;
-        });
-      }else{
-        search += key + '=' + encodeURIComponent(params[key]);
-      }
-      search += '&';
-    });
-    if(search.length > 1){
-      search = search.slice(0,-1);
-    }
-    return search;
-  }
   _getJobData(){
-    this.props.getJobList(this._getParameters());
+    this.props.getJobList();
   }
   _goJobDeatail(job){
     console.log(job);
@@ -97,6 +87,9 @@ class OnlineInterview extends Component{
   constructor(props) {
     super(props);
   }
+  static propTypes = {
+    title: React.PropTypes.string.isRequired
+  };
   render(){
     return(
       <View style={{flex:1,backgroundColor:'#eee'}}>

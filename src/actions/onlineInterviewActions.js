@@ -1,7 +1,11 @@
 import * as types from './actionTypes';
-function essenceList(jobArr,getState){
+function essenceList(jobArr,getState,isFresh){
   let oldDataArr = getState().OnlineJobArr && getState().OnlineJobArr;
-  oldDataArr = [...oldDataArr,...jobArr];
+  if(isFresh){
+    oldDataArr = [...jobArr];
+  }else{
+    oldDataArr = [...oldDataArr,...jobArr];
+  }
   return {
     type: types.ONLINE_LIST_INDEX,
     jobArr : oldDataArr
@@ -9,10 +13,27 @@ function essenceList(jobArr,getState){
 }
 function downloaderr(getState){
   console.log(getState());
- return {
-   type: types.DOWN_LOAD_ERROR,
-   jobArr : getState().OnlineJobArr
- }
+   return {
+     type: types.DOWN_LOAD_ERROR,
+     jobArr : getState().OnlineJobArr
+   }
+}
+function getParameters(params) {
+  let search = "";
+  Object.keys(params).forEach(key => {
+    if(key === 'jobType'){
+      params[key].forEach(obj=>{
+        search += 'jobTypes='+obj.code;
+      });
+    }else{
+      search += key + '=' + encodeURIComponent(params[key]);
+    }
+    search += '&';
+  });
+  if(search.length > 1){
+    search = search.slice(0,-1);
+  }
+  return search;
 }
 export function setCondition(conditionStore){
   return {
@@ -20,9 +41,9 @@ export function setCondition(conditionStore){
     conditionStore
   };
 }
-export function getList(params){
+function query(search,isFresh){
   return (dispatch,getState) => {
-    let url = "http://mofanghr.com/m/jobs/search?" + params;
+    let url = "http://mofanghr.com/m/jobs/search?" + search;
     fetch(url,{
         method: 'GET',
         headers: {
@@ -30,15 +51,27 @@ export function getList(params){
           'Content-Type': 'application/json',
         }
     }).then(res => {
-      console.log(res);
-      return res.json();
+        return res.json();
     }).then(dataArr => {
-      dispatch(essenceList(dataArr,getState));
+        let condition = Object.assign({},getState().conditionStore);
+        condition.start += condition.count;
+        dispatch(setCondition(condition));
+        dispatch(essenceList(dataArr,getState,isFresh));
     }).catch(error => {
-      console.log(error);
-      dispatch(downloaderr(getState));
+        console.log(error);
+        dispatch(downloaderr(getState));
+    }).finally(()=>{
+        dispatch(changeIndicator({isRefreshing:false,freshText:'下拉刷新'}));
+        console.log("finally");
     });
   };
+}
+export function getList(){
+  return (dispatch,getState) => {
+    let condition = Object.assign({},getState().conditionStore);
+    let search = getParameters(condition);
+    dispatch(query(search));
+  }
 }
 export function changeIndicator(indicator){
   return {
@@ -47,8 +80,10 @@ export function changeIndicator(indicator){
   };
 }
 export function refresh(indicator){
-  return {
-    type: types.REFRESH_ONLINE_JOBLIST,
-    indicator
-  };
+  return (dispatch,getState) => {
+    let condition = Object.assign({},getState().conditionStore,{start:0});
+    let search = getParameters(condition);
+    dispatch(changeIndicator(indicator));
+    dispatch(query(search,'fresh'));
+  }
 }

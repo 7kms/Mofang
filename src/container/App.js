@@ -1,7 +1,6 @@
 'use strict';
-import {connect} from 'react-redux';
 import React,{Component} from 'react';
-import {NavigatorIOS,StatusBar,StyleSheet,Text,TouchableHighlight,View} from 'react-native';
+import {NavigatorIOS,StatusBar,StyleSheet} from 'react-native';
 import Util from '../utils';
 import MainPage from '../pages/mainPage.js';
 
@@ -30,5 +29,4 @@ const styles = StyleSheet.create({
     flex:1
   }
 });
-
 export default MoFang;

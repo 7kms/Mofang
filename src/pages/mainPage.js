@@ -51,7 +51,11 @@ class MofangTab extends Component {
     Tab: React.PropTypes.object.isRequired,
     OnlineJobArr: React.PropTypes.array.isRequired,
     OnlineConditionStore: React.PropTypes.object.isRequired,
-    changeTab: React.PropTypes.func.isRequired
+    OnlineJobIndicator: React.PropTypes.object.isRequired,
+    changeTab: React.PropTypes.func.isRequired,
+    changeIndicator: React.PropTypes.func.isRequired,
+    getJobList: React.PropTypes.func.isRequired,
+    refresh: React.PropTypes.func.isRequired
   };
   _isActive (currentTab){
     const {selectedTab} = this.props.Tab;
@@ -80,10 +84,11 @@ class MofangTab extends Component {
             >
             <OnlineInterview
               indicator = {this.props.OnlineJobIndicator}
+              refresh = {this.props.refresh}
               getJobList = {this.props.getJobList}
               jobArr = {this.props.OnlineJobArr}
               conditionStore = {this.props.OnlineConditionStore}
-              title={title}/>
+              title = {title}/>
           </Icon.TabBarItem>
 
           <Icon.TabBarItem
@@ -158,7 +163,6 @@ const styles = StyleSheet.create({
   }
 });
 export default connect((state) => {
-  console.log(state);
   return {
     Tab: state.Tab,
     OnlineJobArr: state.OnlineJobArr,
@@ -169,5 +173,7 @@ export default connect((state) => {
   getJobList:(params)=> dispatch(onlineInterviewActions.getList(params)),
   changeTab:(tab)=> dispatch(TabActions.tabChange(tab)),
   changeIndicator:(indicator)=> dispatch(onlineInterviewActions.changeIndicator(indicator)),
-  refresh:()=>dispatch(onlineInterviewActions.refresh(indicator))
+  refresh:(indicator)=> {
+    dispatch(onlineInterviewActions.refresh(indicator))
+  }
 }))(MainPage);
