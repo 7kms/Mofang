@@ -20,7 +20,8 @@ export default class JobList extends Component {
     dataList: React.PropTypes.array.isRequired,
     onPress: React.PropTypes.func.isRequired,
     onRefresh: React.PropTypes.func.isRequired,
-    pullUp: React.PropTypes.func.isRequired
+    pullUp: React.PropTypes.func.isRequired,
+    indicator: React.PropTypes.object.isRequired,
   };
   componentWillMount(){
     console.log("componentWillMount");
