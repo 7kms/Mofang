@@ -3,8 +3,7 @@ import {
   View,
   TabBarIOS,
   StyleSheet,
-  Text,
-  ActivityIndicator
+  Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as TabActions from '../actions/TabActions';

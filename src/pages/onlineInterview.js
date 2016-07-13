@@ -51,33 +51,15 @@ class JobPage extends Component{
     this._getJobData();
   }
   render(){
-    let content;
-    if(JobPage.loading){
-      content = (
-        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-          <View style={{height:100}}>
-            <ActivityIndicator
-              color={Util.themeColor}
-              size="large"
-              />
-            <Text style={{color:Util.themeColor,fontSize:14,marginTop:15}}>
-              正在拉取数据
-            </Text>
-          </View>
-        </View>
-      );
-    }else{
-      content = (
-        <JobList
-           dataList={this.props.jobArr}
-           onPress={this._goJobDeatail.bind(this)}
-           pullUp={this._pullUp.bind(this)}
-           onRefresh={this._refresh.bind(this)}
-           indicator = {this.props.indicator}
-           />
-      );
-    }
-    return content;
+    return (
+      <JobList
+        dataList={this.props.jobArr}
+        onPress={this._goJobDeatail.bind(this)}
+        pullUp={this._pullUp.bind(this)}
+        onRefresh={this._refresh.bind(this)}
+        indicator = {this.props.indicator}
+        />
+    );
   }
 }
 class OnlineInterview extends Component{

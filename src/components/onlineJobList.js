@@ -5,6 +5,7 @@ import {
   ListView,
   TouchableHighlight,
   RefreshControl,
+  ActivityIndicator,
   Text
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -118,14 +119,17 @@ export default class JobList extends Component {
                   titleColor={Util.themeColor}
                   tintColor={Util.themeColor}/>}
             />:
-            null
-        }
-        {
-          <View>
-            <Text>
-              正在加载。。。
-            </Text>
-          </View>
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+              <View style={{height:100}}>
+                <ActivityIndicator
+                  color={Util.themeColor}
+                  size="large"
+                  />
+                <Text style={{color:Util.themeColor,fontSize:14,marginTop:15}}>
+                  正在拉取数据
+                </Text>
+              </View>
+            </View>
         }
       </View>
     );
