@@ -14,7 +14,6 @@ export default class JobList extends Component {
     super(props);
     console.log('joblist is rendering');
   }
-  static count = 1;
   static propTypes = {
     dataList: React.PropTypes.array.isRequired,
     onPress: React.PropTypes.func.isRequired,
@@ -93,30 +92,41 @@ export default class JobList extends Component {
     this.props.onRefresh({isRefreshing:true,freshText:'正在加载'});
   }
   render(){
+    const {dataList,indicator} = this.props;
     let ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
-    let theDataSource = ds.cloneWithRows(this.props.dataList);
     console.log("render listview");
     return(
       <View style={{flex:1}}>
-        <ListView
-            style={{flex:1,backgroundColor:'#eee',paddingHorizontal:0}}
-            scrollRenderAheadDistance={100}
-            onEndReachedThreshold={100}
-            showsVerticalScrollIndicator={false}
-            enableEmptySections = {true}
-            dataSource={theDataSource}
-            renderRow={this._renderRow.bind(this)}
-            onEndReached={this.props.pullUp.bind(this)}
-            automaticallyAdjustContentInsets = {false}
-            contentInset={{bottom:49}}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.props.indicator.isRefreshing}
-                onRefresh={()=>this._onRefresh()}
-                title={this.props.indicator.freshText}
-                titleColor={Util.themeColor}
-                tintColor={Util.themeColor}/>}
-          />
+        {
+          dataList.length > 0 ?
+          <ListView
+              style={{flex:1,backgroundColor:'#eee'}}
+              scrollRenderAheadDistance={100}
+              onEndReachedThreshold={100}
+              showsVerticalScrollIndicator={false}
+              enableEmptySections = {true}
+              dataSource={ds.cloneWithRows(dataList)}
+              renderRow={this._renderRow.bind(this)}
+              onEndReached={this.props.pullUp.bind(this)}
+              automaticallyAdjustContentInsets = {false}
+              contentInset={{bottom:49}}
+              refreshControl={
+                <RefreshControl
+                  refreshing={indicator.isRefreshing}
+                  onRefresh={()=>this._onRefresh()}
+                  title={indicator.freshText}
+                  titleColor={Util.themeColor}
+                  tintColor={Util.themeColor}/>}
+            />:
+            null
+        }
+        {
+          <View>
+            <Text>
+              正在加载。。。
+            </Text>
+          </View>
+        }
       </View>
     );
   }

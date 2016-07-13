@@ -48,7 +48,7 @@ class JobPage extends Component{
     console.log(job);
   }
   componentWillMount(){
-    //this._getJobData();
+    this._getJobData();
   }
   render(){
     let content;
