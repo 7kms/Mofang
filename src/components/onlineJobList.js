@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Text
 } from 'react-native'
+//import RefreshableListView from 'react-native-refreshable-listview';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Util from '../utils';
 export default class JobList extends Component {
@@ -89,6 +90,17 @@ export default class JobList extends Component {
     )
   }
 
+  _renderFooter(){
+    return (
+      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',height:60}}>
+        <ActivityIndicator
+          animating={true}
+          color={Util.themeColor}
+        />
+        <Text style={{color:Util.themeColor,marginLeft:20}}>正在加载</Text>
+      </View>
+    )
+  }
   _onRefresh(){
     this.props.onRefresh({isRefreshing:true,freshText:'正在加载'});
   }
@@ -103,11 +115,12 @@ export default class JobList extends Component {
           <ListView
               style={{flex:1,backgroundColor:'#eee'}}
               scrollRenderAheadDistance={100}
-              onEndReachedThreshold={100}
+              onEndReachedThreshold={200}
               showsVerticalScrollIndicator={false}
               enableEmptySections = {true}
               dataSource={ds.cloneWithRows(dataList)}
               renderRow={this._renderRow.bind(this)}
+              renderFooter={this._renderFooter.bind(this)}
               onEndReached={this.props.pullUp.bind(this)}
               automaticallyAdjustContentInsets = {false}
               contentInset={{bottom:49}}
