@@ -4,10 +4,10 @@ let initialState = {
     start:0,
     count:15,
     source:'wechat',
-    province: "北京",
+    province: "武汉",
     district: "",
-    jobType : [{name:"",code:""}],
-    salaryRange : "",
+    jobType : [{name:"",code:"0a0107"}],
+    salaryRange : "10001-15000",
     workingYear : "",
     searchText: ""
   },
@@ -25,6 +25,15 @@ export function OnlineJobIndicator(state={isRefreshing:false,freshText:'下拉�
   switch (action.type) {
     case types.CHANGE_ONLINE_INDICATOR:
       return {...state, ...action.indicator}
+    default:
+      return state;
+  }
+}
+export function DownloadIndicator(state=true,action={}){
+  switch (action.type) {
+    case types.DOWN_LOAD_END:
+        return action.canLoadMore;
+      break;
     default:
       return state;
   }

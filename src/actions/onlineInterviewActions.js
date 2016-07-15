@@ -12,11 +12,17 @@ function essenceList(jobArr,getState,isFresh){
   };
 }
 function downloaderr(getState){
-  console.log(getState());
    return {
      type: types.DOWN_LOAD_ERROR,
      jobArr : getState().OnlineJobArr
    }
+}
+function changeDownLoadStatus(canLoadMore){
+  console.log("endßsasasasa");
+  return {
+    type: types.DOWN_LOAD_END,
+    canLoadMore: canLoadMore
+  }
 }
 function getParameters(params) {
   let search = "";
@@ -44,6 +50,7 @@ export function setCondition(conditionStore){
 function query(search,isFresh){
   return (dispatch,getState) => {
     let url = "http://mofanghr.com/m/jobs/search?" + search;
+    console.log(url);
     fetch(url,{
         method: 'GET',
         headers: {
@@ -55,6 +62,10 @@ function query(search,isFresh){
     }).then(dataArr => {
         let condition = Object.assign({},getState().conditionStore);
         condition.start += condition.count;
+        console.log(condition.start);
+        if(dataArr.length < condition.count){
+          dispatch(changeDownLoadStatus(false));
+        }
         dispatch(setCondition(condition));
         dispatch(essenceList(dataArr,getState,isFresh));
     }).catch(error => {

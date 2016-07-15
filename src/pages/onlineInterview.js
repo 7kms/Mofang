@@ -33,7 +33,8 @@ class JobPage extends Component{
     getJobList: React.PropTypes.func.isRequired,
     jobArr: React.PropTypes.array.isRequired,
     conditionStore:  React.PropTypes.object.isRequired,
-    indicator:  React.PropTypes.object.isRequired
+    indicator:  React.PropTypes.object.isRequired,
+    canLoadMore: React.PropTypes.bool.isRequired
   };
   _refresh(){
     this.props.refresh({isRefreshing:true,freshText:'正在加載'});
@@ -58,6 +59,7 @@ class JobPage extends Component{
         pullUp={this._pullUp.bind(this)}
         onRefresh={this._refresh.bind(this)}
         indicator = {this.props.indicator}
+        canLoadMore = {this.props.canLoadMore}
         />
     );
   }

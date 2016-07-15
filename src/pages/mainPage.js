@@ -54,7 +54,8 @@ class MofangTab extends Component {
     changeTab: React.PropTypes.func.isRequired,
     changeIndicator: React.PropTypes.func.isRequired,
     getJobList: React.PropTypes.func.isRequired,
-    refresh: React.PropTypes.func.isRequired
+    refresh: React.PropTypes.func.isRequired,
+    canLoadMore: React.PropTypes.bool.isRequired
   };
   _isActive (currentTab){
     const {selectedTab} = this.props.Tab;
@@ -82,6 +83,7 @@ class MofangTab extends Component {
             selected={this._isActive('interview-online')}
             >
             <OnlineInterview
+              canLoadMore = {this.props.canLoadMore}
               indicator = {this.props.OnlineJobIndicator}
               refresh = {this.props.refresh}
               getJobList = {this.props.getJobList}
@@ -144,7 +146,8 @@ class MainPage extends Component{
   static propTypes = {
     Tab: React.PropTypes.object.isRequired,
     OnlineJobArr: React.PropTypes.array.isRequired,
-    OnlineConditionStore: React.PropTypes.object.isRequired
+    OnlineConditionStore: React.PropTypes.object.isRequired,
+    canLoadMore: React.PropTypes.bool.isRequired
   };
   render(){
     return (
@@ -164,6 +167,7 @@ const styles = StyleSheet.create({
 export default connect((state) => {
   return {
     Tab: state.Tab,
+    canLoadMore: state.DownloadIndicator,
     OnlineJobArr: state.OnlineJobArr,
     OnlineConditionStore: state.OnlineConditionStore,
     OnlineJobIndicator: state.OnlineJobIndicator

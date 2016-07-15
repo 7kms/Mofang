@@ -22,6 +22,7 @@ export default class JobList extends Component {
     onRefresh: React.PropTypes.func.isRequired,
     pullUp: React.PropTypes.func.isRequired,
     indicator: React.PropTypes.object.isRequired,
+    canLoadMore: React.PropTypes.bool.isRequired
   };
   componentWillMount(){
     console.log("componentWillMount");
@@ -91,13 +92,20 @@ export default class JobList extends Component {
   }
 
   _renderFooter(){
+    console.log(this.props.canLoadMore);
     return (
       <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',height:60}}>
+      {
+        this.props.canLoadMore?
         <ActivityIndicator
           animating={true}
           color={Util.themeColor}
-        />
-        <Text style={{color:Util.themeColor,marginLeft:20}}>正在加载</Text>
+        />: null
+      }
+      {
+        this.props.canLoadMore?
+          <Text style={{color:Util.themeColor}}>正在加载</Text>: null
+      }
       </View>
     )
   }
@@ -185,8 +193,7 @@ const jobStyles = StyleSheet.create({
     //flex:1,
     color:'#333',
     fontSize: 16,
-    marginRight:20,
-    backgroundColor:'#fafafa'
+    marginRight:20
   },
   IconCommnicate:{
     width:25,
