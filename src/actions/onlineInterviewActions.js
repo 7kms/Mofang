@@ -18,7 +18,6 @@ function downloaderr(getState){
    }
 }
 function changeDownLoadStatus(canLoadMore){
-  console.log("endßsasasasa");
   return {
     type: types.DOWN_LOAD_END,
     canLoadMore: canLoadMore
@@ -50,7 +49,6 @@ export function setCondition(conditionStore){
 function query(search,isFresh){
   return (dispatch,getState) => {
     let url = "http://mofanghr.com/m/jobs/search?" + search;
-    console.log(url);
     fetch(url,{
         method: 'GET',
         headers: {
@@ -60,9 +58,8 @@ function query(search,isFresh){
     }).then(res => {
         return res.json();
     }).then(dataArr => {
-        let condition = Object.assign({},getState().conditionStore);
+        let condition = Object.assign({},getState().OnlineConditionStore);
         condition.start += condition.count;
-        console.log(condition.start);
         if(dataArr.length < condition.count){
           dispatch(changeDownLoadStatus(false));
         }

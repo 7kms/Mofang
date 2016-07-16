@@ -129,7 +129,7 @@ export default class JobList extends Component {
               dataSource={ds.cloneWithRows(dataList)}
               renderRow={this._renderRow.bind(this)}
               renderFooter={this._renderFooter.bind(this)}
-              onEndReached={this.props.pullUp.bind(this)}
+              onEndReached={this.props.canLoadMore ? this.props.pullUp.bind(this): null}
               automaticallyAdjustContentInsets = {false}
               contentInset={{bottom:49}}
               refreshControl={

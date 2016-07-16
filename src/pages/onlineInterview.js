@@ -2,8 +2,7 @@ import React,{Component} from 'react';
 import {
   View,
   StyleSheet,
-  Text,
-  ActivityIndicator
+  Text
 } from 'react-native';
 import JobList from '../components/onlineJobList.js';
 import Util from '../utils';

@@ -33,7 +33,6 @@ export function DownloadIndicator(state=true,action={}){
   switch (action.type) {
     case types.DOWN_LOAD_END:
         return action.canLoadMore;
-      break;
     default:
       return state;
   }
